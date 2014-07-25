@@ -1,1 +1,1 @@
-This repository contains all dotfiles .bashrc, .zshrc .vimrc etc
+This repository contains all dotfiles .bashrc, .zshrc .xessionrc etc
