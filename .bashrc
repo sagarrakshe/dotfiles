@@ -1,11 +1,12 @@
-
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-
 # If not running interactively, don't do anything
-[ -z "$PS1" ] && return
+case $- in
+    *i*) ;;
+      *) return;;
+esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -15,8 +16,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=100000
-HISTFILESIZE=20000
+HISTSIZE=1000
+HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -30,7 +31,7 @@ shopt -s checkwinsize
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
@@ -56,7 +57,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\! '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
@@ -65,7 +66,7 @@ unset color_prompt force_color_prompt
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-    PS1="\e[0;32m[\w]\n\e[0;31m\h:$ \e[m"
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
     ;;
 *)
     ;;
@@ -88,20 +89,6 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-#My aliases
-alias hibernate='sudo pm-hibernate'
-alias transparent='gconftool -s -t string /apps/gnome-terminal/profiles/Default/background_type transparent'
-alias solid='gconftool -s -t string /apps/gnome-terminal/profiles/Default/background_type solid'
-alias ..="cd ../"
-alias ...="cd ../../"
-alias ....="cd ../../../"
-alias .....="cd ../../../../"
-alias pKill='ps -el | grep $@'
-alias Ping='ping 8.8.8.8'
-alias sublime="/home/sagar/Downloads/Sublime\ Text\ 2/sublime_text $@"
-alias sl="sl -e"
-# alias gdb="gdb -tui $@"
-
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -118,65 +105,10 @@ fi
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
-if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
+  fi
 fi
-
-export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
-export PATH=/home/sagar/Opt/jdk7/bin:$PATH:/home/sagar/Opt/play-2.0.1:/home/sagar/Documents/C/commands:
-
-export DEBEMAIL="sagarrakshe2@gmail.com"  
-export DEBFULLNAME="sagarrakshe"
-
-export CLOJURESCRIPT_HOME=/home/sagar/git-clones/clojurescript
-
-#~/.crackers/intrudeCatch.sh 
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-
-#key-bindings
-#bind '"\e[25~":"~/Documents/unix/shell/sample.sh\n"'
-source /home/sagar/perl5/perlbrew/etc/bashrc
-
-
-##Hadoop set-up
-# Set Hadoop-related environment variables
-export HADOOP_HOME=/usr/local/hadoop
-
-# Set JAVA_HOME (we will also configure JAVA_HOME directly for Hadoop later on)
-#export JAVA_HOME=/usr/lib/jvm/java-6-sun
-
-# Some convenient aliases and functions for running Hadoop-related commands
-unalias fs &> /dev/null
-alias fs="hadoop fs"
-unalias hls &> /dev/null
-alias hls="fs -ls"
-
-# If you have LZO compression enabled in your Hadoop cluster and
-# compress job outputs with LZOP (not covered in this tutorial):
-# Conveniently inspect an LZOP compressed file from the command
-# line; run via:
-#
-# $ lzohead /hdfs/path/to/lzop/compressed/file.lzo
-#
-# Requires installed 'lzop' command.
-#
-lzohead () {
-    hadoop fs -cat $1 | lzop -dc | head -1000 | less
-}
-
-# Add Hadoop bin/ directory to PATH
-export PATH=$PATH:$HADOOP_HOME/bin
-export CDPATH=.:~:/home/sagar/Workspace:/home/sagar/Dropbox/Programs/:
-
-# vi mkdir and cd 
-function mkdircd(){
-    mkdir -p "$@" && eval cd "\"\$$#\"";
-}
-
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
-export PYTHONPATH=$PYTHONPATH:"/usr/local/lib/python2.7/dist-packages"
