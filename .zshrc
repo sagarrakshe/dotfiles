@@ -8,14 +8,13 @@ export EDITOR="vim"
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="awesomesagar"
+ZSH_THEME="bira"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias Install="sudo apt-get install $@"
 alias sz=". ~/.zshrc"
-alias cat="less"
 alias ack='ack-grep'
 alias ncm='ncmpcpp'
 
@@ -107,38 +106,19 @@ v(){
 # Reuse Vim ZSH completions for vim completions
 compdef _vim es
 
-# start tmux
-#if [[ -z "$TMUX"  ]] ;then
-#  ID="`tmux ls | cut -d: -f1`" # get the id of a deattached session
-#  if [[ -z "$ID"  ]] ;then # if not available create a new one
-#    tmux new-session
-#  else
-#    tmux attach-session -t "$ID" # if available attach to it
-#  fi
-#fi
+#start tmux on startup
+if [ -z $TMUX ]
+then
+  tmux
+fi
 
 # map left_alt key to escape key
 xmodmap -e "keycode 64 = Escape"
-
 
 #vim bindings to zle
 bindkey -v
 
 bindkey '^P' up-history
-bindkey '^N' down-history
-bindkey '^?' backward-delete-char
-bindkey '^h' backward-delete-char
-bindkey '^w' backward-kill-word
-bindkey '^r' history-incremental-search-backward
-
-function zle-line-init zle-keymap-select ndkey '^P' up-history
-bindkey '^N' down-history
-bindkey '^?' backward-delete-char
-bindkey '^h' backward-delete-char
-bindkey '^w' backward-kill-word
-bindkey '^r' history-incremental-search-backward
-
-function zle-line-init zle-keymap-select ndkey '^P' up-history
 bindkey '^N' down-history
 bindkey '^?' backward-delete-char
 bindkey '^h' backward-delete-char
@@ -154,4 +134,3 @@ bindkey '^r' history-incremental-search-backward
 # zle -N zle-line-init
 # zle -N zle-keymap-select
 export KEYTIMEOUT=1     # reduce teh delay to 0.1s
-
