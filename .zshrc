@@ -99,14 +99,25 @@ eset(){
 
 # Fire up a new server according to the argument supplied
 vs(){
-    eset $1
-    vim --servername $VI_SERVER
+    set $*
+    vim --servername $1
 }
 
 # Open up the files in the environment Vim server.
 v(){
-    vim --servername $VI_SERVER --remote-silent $*
+    set $*
+    vim --servername $1 --remote-silent $2
 }
+
+gvs(){
+    set $*
+    gvim --servername $1
+}
+
+# gv(){
+#     set $*
+#     gvim --servername $1 --remote-silent $2
+# }
 
 # Reuse Vim ZSH completions for vim completions
 compdef _vim es
