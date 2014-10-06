@@ -63,7 +63,7 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/sagar/bin:"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/sagar/bin:/home/sagar/.scripts/"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
