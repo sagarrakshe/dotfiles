@@ -86,7 +86,10 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/g
 cd () {
     builtin cd "$@"
     case $PWD in
-        /home/sagar/Zlemma) source bin/activate ;;  esac
+      /home/sagar/workspace/industrial | /home/sagar/Zlemma\
+      | /home/sagar/workspace/codecombat)
+          source bin/activate ;;
+    esac
 }
 
 # Set the name of vim session the terminal is tied up to
