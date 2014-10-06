@@ -129,7 +129,7 @@ then
 fi
 
 # map left_alt key to escape key
-xmodmap -e "keycode 64 = Escape"
+xmodmap -e "keycode 108 = Escape"
 
 #vim bindings to zle
 bindkey -v
