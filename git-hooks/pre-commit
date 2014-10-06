@@ -7,8 +7,33 @@
 #
 # To enable this hook, rename this file to "pre-commit".
 
+files=$(git diff --cached --name-only --diff-filter=ACM | grep ".js$")
+if [ "$files" = "" ]; then
+    exit 0
+fi
+pass=0
+
+for file in ${files}; do
+    result=$(jshint ${file} | grep "${file}")
+    if [ "$result" != "" ]
+    then
+        echo "\n\033[91mJSHint Errors in ${file}\033[0m"
+        echo "\033[93m"
+        jshint $file | grep $file | cut -c -$((${#file}+2)) --complement | \
+                sed 's/^/\t- /'
+        echo "\033[0m"
+        pass=$((pass + 1))
+    fi
+done
+
+if [ $pass -ne 0 ] $pas
+then
+    echo "\n\033[91mCOMMIT FAILED:\033[0m Your commit contains files that should pass JSHint but do not. Please fix the JSHint errors and try again."
+    exit 1
+fi
+
 FILES_PATTERN='\.(js|coffee)(\..+)?$'
-FORBIDDEN='debugger\|console.log'
+FORBIDDEN='console.log'
 git diff --cached --name-only | \
     grep -E $FILES_PATTERN | \
     GREP_COLOR='4;5;37;41' xargs grep --color --with-filename -n $FORBIDDEN && \
