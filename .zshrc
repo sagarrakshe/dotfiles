@@ -15,8 +15,10 @@ ZSH_THEME="bira"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias Install="sudo apt-get install $@"
 alias sz=". ~/.zshrc"
+alias ez="vim ~/.zshrc"
 alias ack='ack-grep'
 alias ncm='ncmpcpp'
+alias gspp='git stash && git pull && git stash pop'
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
