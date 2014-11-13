@@ -34,6 +34,7 @@
     aa = !git add . && git add -u . && git status
     c = commit
     cm = commit -m
+    cmn = commit --no-verify
     co = checkout
     ca = commit --amend # careful
     ac = !git add . && git commit
