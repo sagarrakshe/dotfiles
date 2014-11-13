@@ -10,6 +10,8 @@ export EDITOR="vim"
 # time that oh-my-zsh is loaded.
 ZSH_THEME="bira"
 
+# function gvim() { (/usr/bin/gvim -f "$@" &) }
+
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
@@ -19,6 +21,8 @@ alias ez="vim ~/.zshrc"
 alias ack='ack-grep'
 alias ncm='ncmpcpp'
 alias gspp='git stash && git pull && git stash pop'
+alias fuck='sudo $(fc -ln -1)'
+# alias gvim='UBUNTU_MENUPROXY= gvim'
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -64,7 +68,14 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/sagar/bin:/home/sagar/.scripts/"
-# export MANPATH="/usr/local/man:$MANPATH"
+
+NPM_PACKAGES="${HOME}/.npm_packages"
+NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
+
+PATH="$NPM_PACKAGES/bin:/home/sagar/local/bin:/home/sagar/local/usr/bin:/home/sagar/racket/bin:$PATH"
+
+export MANPATH="/usr/local/man:$NPM_PACKAGES/share/man:$MANPATH"
+
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -87,7 +98,7 @@ cd () {
     builtin cd "$@"
     case $PWD in
       /home/sagar/workspace/industrial | /home/sagar/Zlemma\
-      | /home/sagar/workspace/codecombat)
+      | /home/sagar/workspace/codecombat | /home/sagar/workspace/QuodeIt)
           source bin/activate ;;
     esac
 }
