@@ -28,7 +28,7 @@
     usedeltabaseoffset = true # >git 1.5
 
 [alias]
-    s = status
+    st = status
     a = !git add . && git status
     au = !git add -u . && git status
     aa = !git add . && git add -u . && git status
