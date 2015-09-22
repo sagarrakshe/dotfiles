@@ -37,7 +37,7 @@ if [ "$files" = "" ]; then
   pyPass=0
 fi
 for file in ${files}; do
-    result=$(jshint ${file} | grep "${file}")
+    result=$(pep8 ${file} | grep "${file}")
     if [ "$result" != "" ]
     then
         echo "\n\033[91mPEP8 Errors in ${file}\033[0m"
@@ -54,7 +54,7 @@ then
     echo "\n\033[91mCOMMIT FAILED:\033[0m Your commit contains files that should pass PEP8 but do not. Please fix the PEP8 errors and try again."
 fi
 
-if [ $pyPass -eq 1 -o $jsPass -eq 1 ]
+if [ $pyPass -ne 0 -o $jsPass -ne 0 ]
 then
   exit 1
 else
