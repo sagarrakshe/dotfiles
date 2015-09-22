@@ -7,37 +7,66 @@
 #
 # To enable this hook, rename this file to "pre-commit".
 
+# Javascript linter
+jsPass=0
 files=$(git diff --cached --name-only --diff-filter=ACM | grep ".js$")
 if [ "$files" = "" ]; then
-    exit 0
+  jsPass=0
 fi
-pass=0
-
 for file in ${files}; do
     result=$(jshint ${file} | grep "${file}")
     if [ "$result" != "" ]
     then
         echo "\n\033[91mJSHint Errors in ${file}\033[0m"
         echo "\033[93m"
-        jshint $file | grep $file | cut -c -$((${#file}+2)) --complement | \
-                sed 's/^/\t- /'
+        jshint $file | grep $file | cut -c $((${#file}+2))- | sed 's/^/    -/'
         echo "\033[0m"
-        pass=$((pass + 1))
+        jsPass=$((jsPass + 1))
     fi
 done
-
-if [ $pass -ne 0 ] $pas
+if [ $jsPass -ne 0 ]
 then
     echo "\n\033[91mCOMMIT FAILED:\033[0m Your commit contains files that should pass JSHint but do not. Please fix the JSHint errors and try again."
-    exit 1
 fi
 
-FILES_PATTERN='\.(js|coffee)(\..+)?$'
-FORBIDDEN='console.log'
-git diff --cached --name-only | \
-    grep -E $FILES_PATTERN | \
-    GREP_COLOR='4;5;37;41' xargs grep --color --with-filename -n $FORBIDDEN && \
-    echo "\033[31mCOMMIT FAILED:\033[0m" Found "\033[93m\"$FORBIDDEN\"\033[0m" references. Please remove them before commiting. && exit 1
+
+# Python linter
+pyPass=0
+files=$(git diff --cached --name-only --diff-filter=ACM | grep ".py$")
+if [ "$files" = "" ]; then
+  pyPass=0
+fi
+for file in ${files}; do
+    result=$(jshint ${file} | grep "${file}")
+    if [ "$result" != "" ]
+    then
+        echo "\n\033[91mPEP8 Errors in ${file}\033[0m"
+        echo "\033[93m"
+
+        pep8 $file | grep $file | cut -c $((${#file}+2))- | sed 's/^/    - /'
+
+        echo "\033[0m"
+        pyPass=$((pyPass + 1))
+    fi
+done
+if [ $pyPass -ne 0 ]
+then
+    echo "\n\033[91mCOMMIT FAILED:\033[0m Your commit contains files that should pass PEP8 but do not. Please fix the PEP8 errors and try again."
+fi
+
+if [ $pyPass -eq 1 -o $jsPass -eq 1 ]
+then
+  exit 1
+else
+  exit 0
+fi
+
+# FILES_PATTERN='\.(js|coffee)(\..+)?$'
+# FORBIDDEN='console.log'
+# git diff --cached --name-only | \
+#     grep -E $FILES_PATTERN | \
+#     GREP_COLOR='4;5;37;41' xargs grep --color --with-filename -n $FORBIDDEN && \
+#     echo "\033[31mCOMMIT FAILED:\033[0m" Found "\033[93m\"$FORBIDDEN\"\033[0m" references. Please remove them before commiting. && exit 1
 
 if git rev-parse --verify HEAD >/dev/null 2>&1
 then
@@ -65,13 +94,9 @@ if [ "$allownonascii" != "true" ] &&
 then
   cat <<\EOF
 Error: Attempt to add a non-ASCII file name.
-
 This can cause problems if you want to work with people on other platforms.
-
 To be portable it is advisable to rename the file.
-
 If you know what you are doing you can disable this check using:
-
   git config hooks.allownonascii true
 EOF
   exit 1
