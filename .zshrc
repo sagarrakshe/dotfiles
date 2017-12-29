@@ -1,6 +1,9 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
 # export VI_SERVER="foo"
 export EDITOR="vim"
 
@@ -15,8 +18,9 @@ ZSH_THEME="bira"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias Install="sudo apt-get install $@"
+# alias Install="sudo apt-get install $@"
 alias sz=". ~/.zshrc"
+alias tailf="tail -f"
 alias ez="vim ~/.zshrc"
 alias ack='ack-grep'
 alias ncm='ncmpcpp'
@@ -69,13 +73,13 @@ source $ZSH/oh-my-zsh.sh
 
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/sagar/bin:/home/sagar/.scripts/"
 
-NPM_PACKAGES="${HOME}/.npm_packages"
-NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
-
-PATH="$NPM_PACKAGES/bin:/home/sagar/local/bin:/home/sagar/local/usr/bin:/home/sagar/racket/bin:$PATH"
-
-export MANPATH="/usr/local/man:$NPM_PACKAGES/share/man:$MANPATH"
-
+# NPM_PACKAGES="${HOME}/.npm_packages"
+# NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
+#
+# PATH="$NPM_PACKAGES/bin:/home/sagar/local/bin:/home/sagar/local/usr/bin:/home/sagar/racket/bin:$PATH"
+#
+# export MANPATH="/usr/local/man:$NPM_PACKAGES/share/man:$MANPATH"
+#
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -94,14 +98,14 @@ export MANPATH="/usr/local/man:$NPM_PACKAGES/share/man:$MANPATH"
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 
-cd () {
-    builtin cd "$@"
-    case $PWD in
-      /home/sagar/workspace/industrial | /home/sagar/Zlemma\
-      | /home/sagar/workspace/codecombat | /home/sagar/workspace/QuodeIt)
-          source bin/activate ;;
-    esac
-}
+# cd () {
+#     builtin cd "$@"
+#     case $PWD in
+#       /home/sagar/workspace/industrial | /home/sagar/Zlemma\
+#       | /home/sagar/workspace/codecombat | /home/sagar/workspace/QuodeIt)
+#           source bin/activate ;;
+#     esac
+# }
 
 # Set the name of vim session the terminal is tied up to
 eset(){
@@ -140,10 +144,12 @@ then
 fi
 
 # map left_alt key to escape key
-xmodmap -e "keycode 108 = Escape"
+# xmodmap -e "keycode 108 = Escape"
 
-#vim bindings to zle
+# vim bindings to zle
 bindkey -v
+
+set -o emacs
 
 bindkey '^P' up-history
 bindkey '^N' down-history
@@ -160,4 +166,36 @@ bindkey '^r' history-incremental-search-backward
 
 # zle -N zle-line-init
 # zle -N zle-keymap-select
-export KEYTIMEOUT=1     # reduce teh delay to 0.1s
+# export KEYTIMEOUT=1     # reduce teh delay to 0.1s
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/sagar/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/sagar/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/sagar/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/sagar/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# gvm config
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
+#compdef pipenv
+_pipenv() {
+  eval $(env COMMANDLINE="${words[1,$CURRENT]}" _PIPENV_COMPLETE=complete-zsh  pipenv)
+}
+if [[ "$(basename ${(%):-%x})" != "_pipenv" ]]; then
+  autoload -U compinit && compinit
+  compdef _pipenv pipenv
+fi
+
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
