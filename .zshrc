@@ -22,10 +22,10 @@ ZSH_THEME="bira"
 alias sz=". ~/.zshrc"
 alias tailf="tail -f"
 alias ez="vim ~/.zshrc"
-alias ack='ack-grep'
+# alias ack='ack-grep'
 alias ncm='ncmpcpp'
-alias gspp='git stash && git pull && git stash pop'
-alias fuck='sudo $(fc -ln -1)'
+# alias gspp='git stash && git pull && git stash pop'
+# alias fuck='sudo $(fc -ln -1)'
 # alias gvim='UBUNTU_MENUPROXY= gvim'
 
 # Uncomment the following line to use case-sensitive completion.
@@ -65,21 +65,23 @@ alias fuck='sudo $(fc -ln -1)'
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git)
+plugins=(git kubectl zsh-autosuggestions)
+# plugins=(kubectl)
+# plugins=(zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/sagar/bin:/home/sagar/.scripts/"
-
+# export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/sagar/bin:/home/sagar/.scripts/"
+#
 # NPM_PACKAGES="${HOME}/.npm_packages"
 # NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 #
 # PATH="$NPM_PACKAGES/bin:/home/sagar/local/bin:/home/sagar/local/usr/bin:/home/sagar/racket/bin:$PATH"
 #
 # export MANPATH="/usr/local/man:$NPM_PACKAGES/share/man:$MANPATH"
-#
+
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -107,27 +109,27 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/g
 #     esac
 # }
 
-# Set the name of vim session the terminal is tied up to
-eset(){
-    export VI_SERVER=$1
-}
-
-# Fire up a new server according to the argument supplied
-vs(){
-    set $*
-    vim --servername $1
-}
-
-# Open up the files in the environment Vim server.
-v(){
-    set $*
-    vim --servername $1 --remote-silent $2
-}
-
-gvs(){
-    set $*
-    gvim --servername $1
-}
+# # Set the name of vim session the terminal is tied up to
+# eset(){
+#     export VI_SERVER=$1
+# }
+#
+# # Fire up a new server according to the argument supplied
+# vs(){
+#     set $*
+#     vim --servername $1
+# }
+#
+# # Open up the files in the environment Vim server.
+# v(){
+#     set $*
+#     vim --servername $1 --remote-silent $2
+# }
+#
+# gvs(){
+#     set $*
+#     gvim --servername $1
+# }
 
 # gv(){
 #     set $*
@@ -135,9 +137,9 @@ gvs(){
 # }
 
 # Reuse Vim ZSH completions for vim completions
-compdef _vim es
+# compdef _vim es
 
-#start tmux on startup
+# start tmux on startup
 if [ -z $TMUX ]
 then
   tmux
@@ -153,9 +155,10 @@ set -o emacs
 
 bindkey '^P' up-history
 bindkey '^N' down-history
+bindkey '^w' backward-kill-word
 bindkey '^?' backward-delete-char
 bindkey '^h' backward-delete-char
-bindkey '^w' backward-kill-word
+bindkey '^r' history-incremental-search-backward
 bindkey '^r' history-incremental-search-backward
 
 # function zle-line-init zle-keymap-select {
@@ -163,7 +166,7 @@ bindkey '^r' history-incremental-search-backward
 #   RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
 #   zle reset-prompt
 # }
-
+#
 # zle -N zle-line-init
 # zle -N zle-keymap-select
 # export KEYTIMEOUT=1     # reduce teh delay to 0.1s
@@ -174,28 +177,47 @@ if [ -f '/Users/sagar/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/sagar/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/sagar/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # gvm config
-[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
+# [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
+# export PYENV_ROOT="$HOME/.pyenv"
+# export PATH="$PYENV_ROOT/bin:$PATH"
 
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
 
 #compdef pipenv
-_pipenv() {
-  eval $(env COMMANDLINE="${words[1,$CURRENT]}" _PIPENV_COMPLETE=complete-zsh  pipenv)
-}
-if [[ "$(basename ${(%):-%x})" != "_pipenv" ]]; then
-  autoload -U compinit && compinit
-  compdef _pipenv pipenv
-fi
+# _pipenv() {
+#   eval $(env COMMANDLINE="${words[1,$CURRENT]}" _PIPENV_COMPLETE=complete-zsh  pipenv)
+# }
+# if [[ "$(basename ${(%):-%x})" != "_pipenv" ]]; then
+#   autoload -U compinit && compinit
+#   compdef _pipenv pipenv
+# fi
+
+#compdef pipenv
+# _vagrant() {
+#   eval $(env COMMANDLINE="${words[1,$CURRENT]}" _VAGRANT_COMPLETE=complete-zsh  vagrant)
+# }
+# if [[ "$(basename ${(%):-%x})" != "_vagrant" ]]; then
+#   autoload -U compinit && compinit
+#   compdef _vagrant vagrant
+# fi
 
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+# export PATH="$PATH:$HOME/.rvm/bin"
+# export PATH="$HOME/.jenv/bin:$PATH"
+# eval "$(jenv init -)"
+
+export GRADLE_HOME=/usr/local/opt/gradle/libexec
+export PATH=$GRADLE_HOME/bin:$PATH
+
+export GOPATH=$HOME/workspace/go-workspace # don't forget to change your path correctly!
+export GOROOT=/usr/local/go/
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$GOROOT/bin
