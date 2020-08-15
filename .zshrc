@@ -15,18 +15,26 @@ ZSH_THEME="bira"
 
 # function gvim() { (/usr/bin/gvim -f "$@" &) }
 
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-# alias Install="sudo apt-get install $@"
 alias sz=". ~/.zshrc"
 alias tailf="tail -f"
 alias ez="vim ~/.zshrc"
-# alias ack='ack-grep'
+alias ack='ack-grep'
 alias ncm='ncmpcpp'
 # alias gspp='git stash && git pull && git stash pop'
 # alias fuck='sudo $(fc -ln -1)'
 # alias gvim='UBUNTU_MENUPROXY= gvim'
+
+alias pbcopy='xsel --clipboard --input'
+alias pbpaste='xsel --clipboard --output'
+
+# Docker aliases
+alias dpa='docker ps -a'
+alias dvl='docker volume ls'
+
+alias dc="docker-compose"
+alias dokcer="docker"
+
+alias suod="sudo"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -65,7 +73,7 @@ alias ncm='ncmpcpp'
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git kubectl zsh-autosuggestions)
+plugins=(git zsh-autosuggestions docker gcloud)
 # plugins=(kubectl)
 # plugins=(zsh-autosuggestions)
 
@@ -98,16 +106,6 @@ source $ZSH/oh-my-zsh.sh
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
-
-
-# cd () {
-#     builtin cd "$@"
-#     case $PWD in
-#       /home/sagar/workspace/industrial | /home/sagar/Zlemma\
-#       | /home/sagar/workspace/codecombat | /home/sagar/workspace/QuodeIt)
-#           source bin/activate ;;
-#     esac
-# }
 
 # # Set the name of vim session the terminal is tied up to
 # eset(){
@@ -171,20 +169,10 @@ bindkey '^r' history-incremental-search-backward
 # zle -N zle-keymap-select
 # export KEYTIMEOUT=1     # reduce teh delay to 0.1s
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/sagar/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/sagar/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/sagar/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/sagar/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 # gvm config
 # [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
-# export PYENV_ROOT="$HOME/.pyenv"
-# export PATH="$PYENV_ROOT/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
 
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
@@ -214,10 +202,20 @@ fi
 # export PATH="$HOME/.jenv/bin:$PATH"
 # eval "$(jenv init -)"
 
-export GRADLE_HOME=/usr/local/opt/gradle/libexec
-export PATH=$GRADLE_HOME/bin:$PATH
-
+# export GRADLE_HOME=/usr/local/opt/gradle/libexec
+# export PATH=$GRADLE_HOME/bin:$PATH
+#
 export GOPATH=$HOME/workspace/go-workspace # don't forget to change your path correctly!
 export GOROOT=/usr/local/go/
-export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:$GOROOT/bin
+export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+
+# added by travis gem
+#[ -f /home/sagar/.travis/travis.sh ] && source /home/sagar/.travis/travis.sh
+export TERM=xterm-256color
+source ~/.Xmodmap
+export PATH=/home/sagar/.nimble/bin:$PATH
+
+setxkbmap -layout us -option ctrl:nocaps
+
+# Terraform version manager
+export PATH="$HOME/.tfenv/bin:$PATH"
